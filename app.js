@@ -13,7 +13,7 @@ mongoose
     useUnifiedTopology: true,
   })
   .then(() => {
-    console.log("Connected to DB");
+    // console.log("Connected to DB");
   })
   .catch(console.error);
 
@@ -21,5 +21,5 @@ app.use(express.json());
 app.use("/", mainRouter);
 
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+  // console.log(`Server is running on port ${PORT}`);
 });

@@ -1,4 +1,4 @@
-const _id = "";
+// const _id = "";
 
 module.exports = {
   env: {
@@ -23,7 +23,7 @@ module.exports = {
   },
   rules: {
     "no-console": ["warn", { allow: ["error"] }],
-    "no-undef": ["error", {"typeof": true }],
-    "no-underscore-dangle": ["error", {"allow": ["_id"]}];
+    "no-undef": ["error", { typeof: true }],
+    "no-underscore-dangle": ["error", { allow: ["_id"] }],
   },
 };
