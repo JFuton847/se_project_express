@@ -8,11 +8,11 @@ const createItem = (req, res) => {
   const { name, weather, imageUrl } = req.body;
 
   if (!owner) {
-    return res.status(400).send({ message: "Owner is required" });
+    return res.status(400).json({ message: "Owner is required" });
   }
 
   return ClothingItem.create({ name, weather, imageUrl, owner })
-    .then((item) => res.send({ data: item }))
+    .then((item) => res.status(201).json({ data: item }))
     .catch((e) =>
       res.status(500).json({ message: "Error from createItem", e })
     );
@@ -20,9 +20,13 @@ const createItem = (req, res) => {
 
 const getItems = (req, res) => {
   ClothingItem.find({})
-    .then((items) => res.status(200).send(items))
-    .catch((e) => {
-      res.status(500).json({ message: "Error from getItems", e });
+    .then((items) => res.status(200).json(items))
+    .catch((err) => {
+      if (err.name === "ValidationError") {
+        return res.status(400).json({ message: err.message });
+      } else {
+        return res.status(500).json({ message: err.message });
+      }
     });
 };
 
@@ -32,10 +36,14 @@ const updateItem = (req, res) => {
 
   ClothingItem.findByIdAndUpdate(itemId, { $set: { imageUrl } })
     .orFail()
-    .then((item) => res.status(200).send({ data: item }))
-    .catch((e) =>
-      res.status(500).json({ message: "Error from updateItem", e })
-    );
+    .then((item) => res.status(200).json({ data: item }))
+    .catch((err) => {
+      if (err.name === "ValidationError") {
+        return res.status(400).json({ message: err.message });
+      } else {
+        return res.status(500).json({ message: err.message });
+      }
+    });
 };
 
 const deleteItem = (req, res) => {
@@ -44,9 +52,13 @@ const deleteItem = (req, res) => {
   // console.log(itemId);
   ClothingItem.findByIdAndDelete(itemId)
     .orFail()
-    .then(() => res.status(204).send({}))
-    .catch((e) => {
-      res.status(400).json({ message: "Error from deleteItem", e });
+    .then(() => res.status(204).json({}))
+    .catch((err) => {
+      if (err.name === "ValidationError") {
+        return res.status(400).json({ message: err.message });
+      } else {
+        return res.status(400).json({ message: err.message });
+      }
     });
 };
 
