@@ -3,7 +3,9 @@ const ClothingItem = require("../models/clothingItem");
 const createItem = (req, res) => {
   console.log(req.user._id);
 
-  const { name, weather, imageUrl, owner } = req.body;
+  const owner = req.user._id;
+
+  const { name, weather, imageUrl } = req.body;
 
   if (!owner) {
     return res.status(400).send({ message: "Owner is required" });
