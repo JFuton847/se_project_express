@@ -1,8 +1,7 @@
 const ClothingItem = require("../models/clothingItem");
 
 const createItem = (req, res) => {
-  // console.log(res);
-  // console.log(req.body);
+  console.log(req.user._id);
 
   const { name, weather, imageUrl, owner } = req.body;
 
@@ -13,7 +12,7 @@ const createItem = (req, res) => {
   return ClothingItem.create({ name, weather, imageUrl, owner })
     .then((item) => res.send({ data: item }))
     .catch((e) =>
-      res.status(500).send({ message: "Error from createItem", e })
+      res.status(500).json({ message: "Error from createItem", e })
     );
 };
 
@@ -21,7 +20,7 @@ const getItems = (req, res) => {
   ClothingItem.find({})
     .then((items) => res.status(200).send(items))
     .catch((e) => {
-      res.status(500).send({ message: "Error from getItems", e });
+      res.status(500).json({ message: "Error from getItems", e });
     });
 };
 
@@ -33,7 +32,7 @@ const updateItem = (req, res) => {
     .orFail()
     .then((item) => res.status(200).send({ data: item }))
     .catch((e) =>
-      res.status(500).send({ message: "Error from updateItem", e })
+      res.status(500).json({ message: "Error from updateItem", e })
     );
 };
 
@@ -45,7 +44,7 @@ const deleteItem = (req, res) => {
     .orFail()
     .then(() => res.status(204).send({}))
     .catch((e) => {
-      res.status(500).send({ message: "Error from deleteItem", e });
+      res.status(400).json({ message: "Error from deleteItem", e });
     });
 };
 

@@ -20,6 +20,13 @@ mongoose
 app.use(express.json());
 app.use("/", mainRouter);
 
+app.use((req, res, next) => {
+  req.user = {
+    _id: "672d70cb4d73bd1a216917ea", // paste the _id of the test user created in the previous step
+  };
+  next();
+});
+
 app.listen(PORT, () => {
   // console.log(`Server is running on port ${PORT}`);
 });
