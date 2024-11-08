@@ -8,12 +8,9 @@ const { PORT = 3001 } = process.env;
 mongoose.set("strictQuery", true);
 
 mongoose
-  .connect("mongodb://127.0.0.1:27017/wtwr_db", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect("mongodb://127.0.0.1:27017/wtwr_db")
   .then(() => {
-    // console.log("Connected to DB");
+    console.log("Connected to DB");
   })
   .catch(console.error);
 
@@ -21,7 +18,7 @@ app.use(express.json());
 
 app.use((req, res, next) => {
   req.user = {
-    _id: "672d70cb4d73bd1a216917ea", // paste the _id of the test user created in the previous step
+    _id: "672d70cb4d73bd1a216917ea",
   };
   next();
 });
