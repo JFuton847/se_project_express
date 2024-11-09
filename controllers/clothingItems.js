@@ -1,8 +1,6 @@
 const ClothingItem = require("../models/clothingItem");
 
 const createItem = (req, res) => {
-  console.log(req.user._id);
-
   const owner = req.user._id;
 
   const { name, weather, imageUrl } = req.body;
@@ -25,25 +23,22 @@ const createItem = (req, res) => {
   return ClothingItem.create({ name, weather, imageUrl, owner })
     .then((item) => res.status(201).json({ data: item }))
     .catch((err) => {
-      console.error(err);
       if (err.name === "ValidationError") {
         return res.status(400).json({ message: err.message });
       }
-      res.status(500).json({ message: "Error from createItem", err });
+      return res.status(500).json({ message: "Error from createItem", err });
     });
 };
 
-const getItems = (req, res) => {
+const getItems = (req, res) =>
   ClothingItem.find({})
     .then((items) => res.status(200).json(items))
     .catch((err) => {
       if (err.name === "ValidationError") {
         return res.status(400).json({ message: err.message });
-      } else {
-        return res.status(500).json({ message: err.message });
       }
+      return res.status(500).json({ message: err.message });
     });
-};
 
 const updateItem = (req, res) => {
   const { itemId } = req.params;
@@ -55,38 +50,32 @@ const updateItem = (req, res) => {
       .json({ message: "Missing required field: imageUrl" });
   }
 
-  ClothingItem.findByIdAndUpdate(itemId, { $set: { imageUrl } })
+  return ClothingItem.findByIdAndUpdate(itemId, { $set: { imageUrl } })
     .orFail()
     .then((item) => res.status(200).json({ data: item }))
     .catch((err) => {
       if (err.name === "ValidationError") {
         return res.status(400).json({ message: err.message });
-      } else {
-        return res.status(500).json({ message: err.message });
       }
+      return res.status(500).json({ message: err.message });
     });
 };
 
 const deleteItem = (req, res) => {
   const { itemId } = req.params;
 
-  // **[Change 1]** Validate the itemId (to ensure it's a valid ObjectId)
   if (!/^[0-9a-fA-F]{24}$/.test(itemId)) {
     return res.status(400).json({ message: "Invalid item ID format" });
   }
 
-  ClothingItem.findByIdAndDelete(itemId)
+  return ClothingItem.findByIdAndDelete(itemId)
     .then((item) => {
       if (!item) {
-        console.error("Item not found");
         return res.status(404).json({ message: "Item not found" });
       }
-      res.status(200).json({ message: "Item deleted successfully" });
+      return res.status(200).json({ message: "Item deleted successfully" });
     })
     .catch((err) => {
-      console.error("Error deleting item:", err);
-
-      // **[Change 2]** Handle Mongoose CastError for invalid ObjectId
       if (err.name === "CastError") {
         return res.status(400).json({ message: "Invalid item ID format" });
       }
@@ -100,11 +89,12 @@ const deleteItem = (req, res) => {
 const likeItem = (req, res) => {
   const { itemId } = req.params;
 
+  // Validate the itemId (to ensure it's a valid ObjectId)
   if (!/^[0-9a-fA-F]{24}$/.test(itemId)) {
     return res.status(400).json({ message: "Invalid item ID format" });
   }
 
-  ClothingItem.findByIdAndUpdate(
+  return ClothingItem.findByIdAndUpdate(
     req.params.itemId,
     { $addToSet: { likes: req.user._id } },
     { new: true }
@@ -113,7 +103,7 @@ const likeItem = (req, res) => {
       if (!item) {
         return res.status(404).json({ message: "Item not found" });
       }
-      res.status(200).json({ data: item });
+      return res.status(200).json({ data: item });
     })
     .catch((err) =>
       res.status(500).json({ message: "Error liking item", error: err })
@@ -128,7 +118,7 @@ const dislikeItem = (req, res) => {
     return res.status(400).json({ message: "Invalid item ID format" });
   }
 
-  ClothingItem.findByIdAndUpdate(
+  return ClothingItem.findByIdAndUpdate(
     itemId, // Using itemId directly
     { $pull: { likes: req.user._id } }, // Remove the user ID from the likes array
     { new: true }
@@ -137,11 +127,9 @@ const dislikeItem = (req, res) => {
       if (!item) {
         return res.status(404).json({ message: "Item not found" });
       }
-      res.status(200).json({ data: item });
+      return res.status(200).json({ data: item });
     })
     .catch((err) => {
-      console.error("Error unliking item:", err);
-
       // Handle specific Mongoose CastError for invalid ObjectId
       if (err.name === "CastError") {
         return res.status(400).json({ message: "Invalid item ID format" });
