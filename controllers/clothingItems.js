@@ -5,8 +5,6 @@ const {
   NOT_FOUND,
   INTERNAL_SERVER_ERROR,
   MISSING_FIELDS,
-  OWNER_REQUIRED,
-  AUTHENTICATION_ERROR,
   SERVER_ERROR,
   ITEM_NOT_FOUND,
   INVALID_ITEM_ID,
@@ -113,7 +111,7 @@ const likeItem = (req, res) => {
       }
       return res.status(200).json({ data: item });
     })
-    .catch((err) =>
+    .catch(() =>
       res.status(INTERNAL_SERVER_ERROR).json({ message: SERVER_ERROR })
     );
 };
