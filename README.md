@@ -1,9 +1,24 @@
 # WTWR (What to Wear?): Back End
-The back-end project is focused on creating a server for the WTWR application. You’ll gain a deeper understanding of how to work with databases, set up security and testing, and deploy web applications on a remote machine. The eventual goal is to create a server with an API and user authorization.
-## Running the Project
-`npm run start` — to launch the server 
 
-`npm run dev` — to launch the server with the hot reload feature
+The WTWR back-end project focuses on building a server for the What to Wear? application. This project provides a foundation in setting up a database-driven server with a focus on security, error handling, and responsive API design. The server enables authenticated users to manage wardrobe items based on weather conditions.
 
-### Testing
-Before committing your code, make sure you edit the file `sprint.txt` in the root folder. The file `sprint.txt` should contain the number of the sprint you're currently working on. For ex. 12
+# Project Overview
+
+The WTWR server interacts with the front-end application, allowing users to create, read, update, and delete (CRUD) items stored in a MongoDB database. This project includes user authentication, which protects specific routes to ensure only authorized users can perform certain actions.
+
+# Features
+
+CRUD Operations: Full support for creating, reading, updating, and deleting clothing items in the database.
+User Authentication: Secure endpoints to control access and protect user data.
+Error Handling: Comprehensive error handling to ensure meaningful responses and manage server errors effectively.
+Testing: Tested through Postman and MongoDB Compass for API validation and data integrity.
+
+# Technologies and Techniques
+
+This project utilizes the following technologies:
+
+Node.js and Express.js for server setup and request handling.
+MongoDB and Mongoose for data storage, schema creation, and data modeling.
+ESLint for code consistency and maintaining coding standards.
+Environment Variables to securely manage sensitive data, such as database URIs.
+Postman and MongoDB Compass for testing and database management.
