@@ -4,7 +4,6 @@ const NOT_FOUND = 404;
 const INTERNAL_SERVER_ERROR = 500;
 
 // Error Messages
-const MISSING_FIELDS = "Missing required fields: name, weather, or imageUrl";
 const OWNER_REQUIRED = "Owner is required";
 const AUTHENTICATION_ERROR = "User not authenticated or missing user ID";
 const SERVER_ERROR = "An error has occurred on the server";
@@ -18,7 +17,6 @@ module.exports = {
   UNAUTHORIZED,
   NOT_FOUND,
   INTERNAL_SERVER_ERROR,
-  MISSING_FIELDS,
   OWNER_REQUIRED,
   AUTHENTICATION_ERROR,
   SERVER_ERROR,

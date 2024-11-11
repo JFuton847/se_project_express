@@ -4,7 +4,6 @@ const {
   BAD_REQUEST,
   NOT_FOUND,
   INTERNAL_SERVER_ERROR,
-  MISSING_FIELDS,
   SERVER_ERROR,
   ITEM_NOT_FOUND,
   INVALID_ITEM_ID,
@@ -43,31 +42,9 @@ const createItem = (req, res) => {
 const getItems = (req, res) =>
   ClothingItem.find({})
     .then((items) => res.status(200).json(items))
-    .catch((err) => {
-      if (err.name === "ValidationError") {
-        return res.status(BAD_REQUEST).json({ message: err.message });
-      }
-      return res.status(INTERNAL_SERVER_ERROR).json({ message: SERVER_ERROR });
+    .catch(() => {
+      res.status(INTERNAL_SERVER_ERROR).json({ message: SERVER_ERROR });
     });
-
-const updateItem = (req, res) => {
-  const { itemId } = req.params;
-  const { imageUrl } = req.body;
-
-  if (!imageUrl) {
-    return res.status(BAD_REQUEST).json({ message: MISSING_FIELDS });
-  }
-
-  return ClothingItem.findByIdAndUpdate(itemId, { $set: { imageUrl } })
-    .orFail()
-    .then((item) => res.status(200).json({ data: item }))
-    .catch((err) => {
-      if (err.name === "ValidationError") {
-        return res.status(BAD_REQUEST).json({ message: err.message });
-      }
-      return res.status(INTERNAL_SERVER_ERROR).json({ message: SERVER_ERROR });
-    });
-};
 
 const deleteItem = (req, res) => {
   const { itemId } = req.params;
@@ -148,7 +125,6 @@ const dislikeItem = (req, res) => {
 module.exports = {
   createItem,
   getItems,
-  updateItem,
   deleteItem,
   likeItem,
   dislikeItem,
