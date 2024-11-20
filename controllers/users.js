@@ -135,7 +135,7 @@ const updateProfile = (req, res) => {
 
 const findUserByCredentials = (email, password) => {
   return User.findOne({ email })
-    .select("+password") // Explicitly include password
+    .select("+password")
     .then((user) => {
       if (!user) {
         const error = new Error("Invalid username or password.");
