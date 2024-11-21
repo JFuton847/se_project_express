@@ -46,10 +46,18 @@ const getUsers = (req, res) => {
 const createUser = (req, res) => {
   const { name, avatar, email, password } = req.body;
 
+  if (!email || !password) {
+    return res
+      .status(BAD_REQUEST)
+      .send({ message: "Email and password are required." });
+  }
+
   User.findOne({ email }) // Check if a user with the given email exists
     .then((existingUser) => {
       if (existingUser) {
-        return res.status(409).send({ message: "Email already exists." }); // Handle duplicate email
+        return res
+          .status(DUPLICATE_ERROR)
+          .send({ message: "Email already exists." }); // Handle duplicate email
       }
 
       return bcrypt
@@ -83,6 +91,19 @@ const createUser = (req, res) => {
     })
     .catch((err) => {
       console.error(err);
+      if (err.code === 11000) {
+        // Handle duplicate email error
+        return res
+          .status(DUPLICATE_ERROR)
+          .send({ message: DUPLICATE_EMAIL_MESSAGE });
+      }
+
+      if (err.name === "ValidationError") {
+        // Handle validation errors
+        return res.status(BAD_REQUEST).send({ message: err.message });
+      }
+
+      // Handle other server errors
       return res.status(INTERNAL_SERVER_ERROR).send({ message: SERVER_ERROR });
     });
 };
@@ -107,6 +128,12 @@ const getUser = (req, res) => {
 
 const login = (req, res) => {
   const { email, password } = req.body;
+
+  if (!email || !password) {
+    return res
+      .status(BAD_REQUEST)
+      .send({ message: "Email and password are required." });
+  }
 
   User.findUserByCredentials(email, password)
     .then((user) => {
@@ -146,25 +173,29 @@ const updateProfile = (req, res) => {
     });
 };
 
-const findUserByCredentials = (email, password) => {
-  return User.findOne({ email })
-    .select("+password")
-    .then((user) => {
-      if (!user) {
-        const error = new Error("Invalid username or password.");
-        error.statusCode = 401;
-        throw error;
-      }
-      return bcrypt.compare(password, user.password).then((matched) => {
-        if (!matched) {
-          const error = new Error("Invalid username or password.");
-          error.statusCode = 401;
-          throw error;
-        }
-        return user;
-      });
-    });
-};
+// const findUserByCredentials = (email, password) => {
+//   console.log(email, password);
+//   return User.findOne({ email })
+//     .select("+password")
+//     .then((user) => {
+//       if (!user) {
+//         const error = new Error("Invalid username or password.");
+//         error.statusCode = 401;
+//         throw error;
+//       }
+//       console.log(user);
+//       return bcrypt.compare(password, user.password).then((matched) => {
+//         console.log(matched);
+//         console.log(password);
+//         if (!matched) {
+//           const error = new Error("Invalid username or password.");
+//           error.statusCode = 401;
+//           throw error;
+//         }
+//         return user;
+//       });
+//     });
+// };
 
 module.exports = {
   getUsers,
@@ -173,5 +204,4 @@ module.exports = {
   login,
   getCurrentUser,
   updateProfile,
-  findUserByCredentials,
 };
