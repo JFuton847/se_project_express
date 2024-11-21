@@ -22,7 +22,13 @@ const getCurrentUser = (req, res) => {
   const { _id } = req.user; // Extract the logged-in user's ID from req.user
 
   User.findById(_id)
-    .then((user) => {
+    .then((data) => {
+      const user = {
+        _id: data.id,
+        name: data.name,
+        email: data.email,
+        avatar: data.avatar,
+      };
       if (!user) {
         return res.status(NOT_FOUND).send({ message: USER_NOT_FOUND });
       }
@@ -158,7 +164,13 @@ const updateProfile = (req, res) => {
     { name, avatar }, // Update these fields
     { new: true, runValidators: true } // Return updated doc and run validators
   )
-    .then((updatedUser) => {
+    .then((data) => {
+      const updatedUser = {
+        _id: data.id,
+        name: data.name,
+        email: data.email,
+        avatar: data.avatar,
+      };
       if (!updatedUser) {
         return res.status(NOT_FOUND).send({ message: USER_NOT_FOUND });
       }
