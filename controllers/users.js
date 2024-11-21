@@ -1,5 +1,5 @@
-const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
 const User = require("../models/user");
 const { JWT_SECRET } = require("../utils/config");
 
@@ -46,30 +46,43 @@ const getUsers = (req, res) => {
 const createUser = (req, res) => {
   const { name, avatar, email, password } = req.body;
 
-  bcrypt
-    .hash(password, 10)
-    .then((hashedPassword) => {
-      return User.create({
-        name,
-        avatar,
-        email,
-        password: hashedPassword,
-      });
-    })
-    .then((user) => {
-      const { password, ...userWithoutPassword } = user.toObject();
-      res.status(201).send(userWithoutPassword);
+  User.findOne({ email }) // Check if a user with the given email exists
+    .then((existingUser) => {
+      if (existingUser) {
+        return res.status(409).send({ message: "Email already exists." }); // Handle duplicate email
+      }
+
+      return bcrypt
+        .hash(password, 10)
+        .then((hashedPassword) => {
+          return User.create({
+            name,
+            avatar,
+            email,
+            password: hashedPassword,
+          });
+        })
+        .then((user) => {
+          const { password, ...userWithoutPassword } = user.toObject();
+          res.status(201).send(userWithoutPassword);
+        })
+        .catch((err) => {
+          console.error(err);
+          if (err.code === 11000) {
+            return res
+              .status(DUPLICATE_ERROR)
+              .send({ message: DUPLICATE_EMAIL_MESSAGE });
+          }
+          if (err.name === "ValidationError") {
+            return res.status(BAD_REQUEST).send({ message: err.message });
+          }
+          return res
+            .status(INTERNAL_SERVER_ERROR)
+            .send({ message: SERVER_ERROR });
+        });
     })
     .catch((err) => {
       console.error(err);
-      if (err.code === 11000) {
-        return res
-          .status(DUPLICATE_ERROR)
-          .send({ message: DUPLICATE_EMAIL_MESSAGE });
-      }
-      if (err.name === "ValidationError") {
-        return res.status(BAD_REQUEST).send({ message: err.message });
-      }
       return res.status(INTERNAL_SERVER_ERROR).send({ message: SERVER_ERROR });
     });
 };

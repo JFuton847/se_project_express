@@ -6,7 +6,7 @@ const DUPLICATE_ERROR = 409;
 
 // Error Messages
 const OWNER_REQUIRED = "Owner is required";
-const AUTHENTICATION_ERROR = "User not authenticated or missing user ID";
+const AUTHENTICATION_ERROR = "Invalid username or password.";
 const SERVER_ERROR = "An error has occurred on the server";
 const ITEM_NOT_FOUND = "Item not found";
 const INVALID_ITEM_ID = "Invalid item ID format";
