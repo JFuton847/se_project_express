@@ -24,7 +24,6 @@ const auth = (req, res, next) => {
 
   try {
     const payload = jwt.verify(token, JWT_SECRET);
-
     req.user = payload; // Add user data to request for downstream access
     return next();
   } catch (error) {
