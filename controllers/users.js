@@ -32,11 +32,11 @@ const getCurrentUser = (req, res) => {
       if (!user) {
         return res.status(NOT_FOUND).send({ message: USER_NOT_FOUND });
       }
-      res.status(200).send(user);
+      return res.status(200).send(user);
     })
     .catch((err) => {
       console.error(err);
-      res.status(INTERNAL_SERVER_ERROR).send({ message: SERVER_ERROR });
+      return res.status(INTERNAL_SERVER_ERROR).send({ message: SERVER_ERROR });
     });
 };
 
@@ -68,17 +68,18 @@ const createUser = (req, res) => {
 
       return bcrypt
         .hash(password, 10)
-        .then((hashedPassword) => {
-          return User.create({
+        .then((hashedPassword) =>
+          User.create({
             name,
             avatar,
             email,
             password: hashedPassword,
-          });
-        })
+          })
+        )
         .then((user) => {
-          const { password, ...userWithoutPassword } = user.toObject();
-          res.status(201).send(userWithoutPassword);
+          const { password: UserPassword, ...userWithoutPassword } =
+            user.toObject();
+          return res.status(201).send(userWithoutPassword);
         })
         .catch((err) => {
           console.error(err);
@@ -112,6 +113,7 @@ const createUser = (req, res) => {
       // Handle other server errors
       return res.status(INTERNAL_SERVER_ERROR).send({ message: SERVER_ERROR });
     });
+  return null;
 };
 
 const getUser = (req, res) => {
@@ -141,16 +143,16 @@ const login = (req, res) => {
       .send({ message: "Email and password are required." });
   }
 
-  User.findUserByCredentials(email, password)
+  return User.findUserByCredentials(email, password)
     .then((user) => {
       const token = jwt.sign({ _id: user._id }, JWT_SECRET, {
         expiresIn: "7d",
       });
-      res.send({ token });
+      return res.send({ token });
     })
     .catch((err) => {
       console.error(err);
-      res.status(UNAUTHORIZED).send({ message: AUTHENTICATION_ERROR });
+      return res.status(UNAUTHORIZED).send({ message: AUTHENTICATION_ERROR });
     });
 };
 
@@ -174,14 +176,14 @@ const updateProfile = (req, res) => {
       if (!updatedUser) {
         return res.status(NOT_FOUND).send({ message: USER_NOT_FOUND });
       }
-      res.status(200).send(updatedUser);
+      return res.status(200).send(updatedUser);
     })
     .catch((err) => {
       console.error(err);
       if (err.name === "ValidationError") {
         return res.status(BAD_REQUEST).send({ message: err.message });
       }
-      res.status(INTERNAL_SERVER_ERROR).send({ message: SERVER_ERROR });
+      return res.status(INTERNAL_SERVER_ERROR).send({ message: SERVER_ERROR });
     });
 };
 
