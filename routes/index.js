@@ -8,8 +8,6 @@ const auth = require("../middlewares/auth");
 
 const { NOT_FOUND, ROUTER_NOT_FOUND } = require("../utils/errors");
 
-router.use("/signin", (req, res) => res.send("Signin route"));
-router.use("/signup", (req, res) => res.send("Signup route"));
 router.use("/items", itemRouter);
 
 router.use(auth);

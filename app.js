@@ -17,12 +17,11 @@ mongoose
   })
   .catch(console.error);
 
+app.use(cors());
 app.use(express.json());
 
 app.post("/signin", login);
 app.post("/signup", createUser);
-
-app.use(auth);
 
 app.use("/", mainRouter);
 
@@ -31,8 +30,6 @@ app.use((err, req, res) => {
     .status(err.status || 500)
     .json({ message: err.message || "Server Error" });
 });
-
-app.use(cors());
 
 app.listen(PORT, () => {
   // console.log(`Server is running on port ${PORT}`);

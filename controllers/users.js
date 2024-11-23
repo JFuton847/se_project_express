@@ -40,15 +40,6 @@ const getCurrentUser = (req, res) => {
     });
 };
 
-const getUsers = (req, res) => {
-  User.find({})
-    .then((users) => res.status(200).send(users))
-    .catch((err) => {
-      console.error(err);
-      return res.status(INTERNAL_SERVER_ERROR).send({ message: SERVER_ERROR });
-    });
-};
-
 const createUser = (req, res) => {
   const { name, avatar, email, password } = req.body;
 
@@ -116,24 +107,6 @@ const createUser = (req, res) => {
   return null;
 };
 
-const getUser = (req, res) => {
-  const { userId } = req.params;
-
-  User.findById(userId)
-    .orFail()
-    .then((user) => res.status(200).send(user))
-    .catch((err) => {
-      console.error(err);
-      if (err.name === "DocumentNotFoundError") {
-        return res.status(NOT_FOUND).send({ message: USER_NOT_FOUND });
-      }
-      if (err.name === "CastError") {
-        return res.status(BAD_REQUEST).send({ message: INVALID_ITEM_ID });
-      }
-      return res.status(INTERNAL_SERVER_ERROR).send({ message: SERVER_ERROR });
-    });
-};
-
 const login = (req, res) => {
   const { email, password } = req.body;
 
@@ -187,34 +160,8 @@ const updateProfile = (req, res) => {
     });
 };
 
-// const findUserByCredentials = (email, password) => {
-//   console.log(email, password);
-//   return User.findOne({ email })
-//     .select("+password")
-//     .then((user) => {
-//       if (!user) {
-//         const error = new Error("Invalid username or password.");
-//         error.statusCode = 401;
-//         throw error;
-//       }
-//       console.log(user);
-//       return bcrypt.compare(password, user.password).then((matched) => {
-//         console.log(matched);
-//         console.log(password);
-//         if (!matched) {
-//           const error = new Error("Invalid username or password.");
-//           error.statusCode = 401;
-//           throw error;
-//         }
-//         return user;
-//       });
-//     });
-// };
-
 module.exports = {
-  getUsers,
   createUser,
-  getUser,
   login,
   getCurrentUser,
   updateProfile,

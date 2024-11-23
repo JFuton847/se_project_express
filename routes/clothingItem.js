@@ -8,7 +8,7 @@ const {
 // CRUD
 
 // Create
-router.post("/", createItem);
+router.post("/", auth, createItem);
 
 // Read
 
@@ -20,7 +20,7 @@ router.get("/", getItems);
 
 // Delete
 
-router.delete("/:itemId", deleteItem);
+router.delete("/:itemId", auth, deleteItem);
 // router.delete("/:itemId/likes", dislikeItem);
 
 module.exports = router;
