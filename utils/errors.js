@@ -3,6 +3,7 @@ const UNAUTHORIZED = 401;
 const NOT_FOUND = 404;
 const INTERNAL_SERVER_ERROR = 500;
 const DUPLICATE_ERROR = 409;
+const FORBIDDEN = 403;
 
 // Error Messages
 const OWNER_REQUIRED = "Owner is required";
@@ -28,4 +29,5 @@ module.exports = {
   ROUTER_NOT_FOUND,
   DUPLICATE_ERROR,
   DUPLICATE_EMAIL_MESSAGE,
+  FORBIDDEN,
 };

@@ -7,26 +7,12 @@ const {
   SERVER_ERROR,
   ITEM_NOT_FOUND,
   INVALID_ITEM_ID,
+  FORBIDDEN,
 } = require("../utils/errors");
 
 const createItem = (req, res) => {
   const owner = req.user._id;
   const { name, weather, imageUrl } = req.body;
-
-  // if (!name || !weather || !imageUrl) {
-  //   return res
-  //     .status(400)
-  //     .json({ message: "Missing required fields: name, weather, or imageUrl" });
-  // }
-
-  // if (!owner) {
-  //   return res.status(400).json({ message: "Owner is required" });
-  // }
-  // if (!req.user || !req.user._id) {
-  //   return res
-  //     .status(400)
-  //     .json({ message: "User not authenticated or missing user ID" });
-  // }
 
   return ClothingItem.create({ name, weather, imageUrl, owner })
     .then((item) => res.status(201).json({ data: item }))
@@ -66,7 +52,7 @@ const deleteItem = (req, res) => {
       if (item.owner.toString() !== req.user._id.toString()) {
         // If the user is not the owner, return a 403 Forbidden error
         return res
-          .status(403)
+          .status(FORBIDDEN)
           .json({ message: "You do not have permission to delete this item." });
       }
 
