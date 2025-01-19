@@ -3,7 +3,7 @@ const BadRequestError = require("../Errors/BadRequestError");
 const NotFoundError = require("../Errors/NotFoundError");
 const ForbiddenError = require("../Errors/ForbiddenError");
 
-const createItem = (req, res) => {
+const createItem = (req, res, next) => {
   const owner = req.user._id;
   const { name, weather, imageUrl } = req.body;
 
