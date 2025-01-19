@@ -1,7 +1,7 @@
 const ClothingItem = require("../models/clothingItem");
-const BadRequestError = require("../Errors/BadRequestError.js");
-const NotFoundError = require("../Errors/NotFoundError.js");
-const ForbiddenError = require("../Errors/ForbiddenError.js");
+const BadRequestError = require("../Errors/BadRequestError");
+const NotFoundError = require("../Errors/NotFoundError");
+const ForbiddenError = require("../Errors/ForbiddenError");
 
 const createItem = (req, res) => {
   const owner = req.user._id;
