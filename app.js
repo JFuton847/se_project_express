@@ -5,6 +5,7 @@ const { errors } = require("celebrate");
 const mainRouter = require("./routes/index");
 const { login, createUser } = require("./controllers/users");
 const errorHandler = require("./middlewares/ErrorHandler");
+const { requestLogger, errorLogger } = require("./middlewares/logger");
 
 const app = express();
 const { PORT = 3001 } = process.env;
@@ -21,6 +22,9 @@ mongoose
 app.use(cors());
 app.use(express.json());
 
+app.use(requestLogger);
+app.use(routes);
+
 app.post("/signin", login);
 app.post("/signup", createUser);
 
@@ -31,6 +35,8 @@ app.use((err, req, res) => {
     .status(err.status || 500)
     .json({ message: err.message || "Server Error" });
 });
+
+app.use(errorLogger);
 
 app.use(errors());
 
