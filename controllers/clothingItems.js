@@ -50,7 +50,7 @@ const deleteItem = (req, res, next) => {
       }
 
       return item
-        .remove()
+        .deleteOne()
         .then(() =>
           res.status(200).json({ message: "Item deleted successfully" })
         );
