@@ -4,6 +4,7 @@ const cors = require("cors");
 const mainRouter = require("./routes/index");
 const { login, createUser } = require("./controllers/users");
 const errorHandler = require("./middlewares/ErrorHandler");
+const { errors } = require("celebrate");
 
 const app = express();
 const { PORT = 3001 } = process.env;
@@ -23,6 +24,8 @@ app.use(express.json());
 app.post("/signin", login);
 app.post("/signup", createUser);
 
+const { errors } = require("celebrate");
+
 app.use("/", mainRouter);
 
 app.use((err, req, res) => {
@@ -30,6 +33,8 @@ app.use((err, req, res) => {
     .status(err.status || 500)
     .json({ message: err.message || "Server Error" });
 });
+
+app.use(errors());
 
 app.use(errorHandler);
 
