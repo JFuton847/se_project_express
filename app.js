@@ -22,12 +22,10 @@ mongoose
 app.use(cors());
 app.use(express.json());
 
-app.use(requestLogger);
-app.use(routes);
-
 app.post("/signin", login);
 app.post("/signup", createUser);
 
+app.use(requestLogger);
 app.use("/", mainRouter);
 
 app.use((err, req, res) => {
