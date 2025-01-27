@@ -6,6 +6,12 @@ The WTWR back-end project focuses on building a server for the What to Wear? app
 
 The WTWR server interacts with the front-end application, allowing users to create, read, update, and delete (CRUD) items stored in a MongoDB database. This project includes user authentication, which protects specific routes to ensure only authorized users can perform certain actions.
 
+# Project URLs
+
+- **Main Website**: [https://vaultboy.jumpingcrab.com] (https://vaultboy.jumpingcrab.com)
+  **Alternate Website**: [https://www.vaultboy.jumpingcrab.com] (https://www.vaultboy.jumpingcrab.com)
+  **API Endpoint**: [https://api.vaultboy.jumpingcrab.com] (https://api.vaultboy.jumpingcrab.com)
+
 # Features
 
 CRUD Operations: Full support for creating, reading, updating, and deleting clothing items in the database.
