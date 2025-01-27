@@ -23,7 +23,7 @@ mongoose
 app.use(cors());
 app.use(express.json());
 
-//REMOVE THIS CODE AFTER PASSING THE REVIEW.
+// REMOVE THIS CODE AFTER PASSING THE REVIEW.
 
 app.get("/crash-test", () => {
   setTimeout(() => {
