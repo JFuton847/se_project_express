@@ -6,10 +6,11 @@ const {
   getItems,
   deleteItem,
 } = require("../controllers/clothingItems");
+const { validateClothingItemBody } = require("../middlewares/validation");
 // CRUD
 
 // Create
-router.post("/", auth, createItem);
+router.post("/", auth, validateClothingItemBody, createItem);
 
 // Read
 
