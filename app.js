@@ -7,7 +7,7 @@ const mainRouter = require("./routes/index");
 const { login, createUser } = require("./controllers/users");
 const errorHandler = require("./middlewares/ErrorHandler");
 const { requestLogger, errorLogger } = require("./middlewares/logger");
-const { validateLogin } = require("../middlewares/validation");
+const { validateLogin } = require("./middlewares/validation");
 
 const app = express();
 const { PORT = 3001 } = process.env;

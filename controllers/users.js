@@ -2,19 +2,14 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const User = require("../models/user");
 const { JWT_SECRET } = require("../utils/config");
-const InternalServerError = require("../Errors/InternalServerError");
+// const InternalServerError = require("../Errors/InternalServerError");
 const NotFoundError = require("../Errors/NotFoundError");
 const DuplicateError = require("../Errors/DuplicateError");
 const BadRequestError = require("../Errors/BadRequestError");
 
 const {
   BAD_REQUEST,
-  NOT_FOUND,
-  INTERNAL_SERVER_ERROR,
-  SERVER_ERROR,
-  USER_NOT_FOUND,
   DUPLICATE_ERROR,
-  DUPLICATE_EMAIL_MESSAGE,
   AUTHENTICATION_ERROR,
   UNAUTHORIZED,
 } = require("../utils/errors");
