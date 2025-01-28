@@ -122,7 +122,7 @@ const updateProfile = (req, res, next) => {
         avatar: data.avatar,
       };
       if (!updatedUser) {
-        throw new NotFoundError("User not updated");
+        throw new NotFoundError("User not found");
       }
       return res.status(200).send(updatedUser);
     })
