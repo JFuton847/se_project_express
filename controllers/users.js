@@ -4,12 +4,11 @@ const User = require("../models/user");
 const { JWT_SECRET } = require("../utils/config");
 // const InternalServerError = require("../Errors/InternalServerError");
 const NotFoundError = require("../Errors/NotFoundError");
-const DuplicateError = require("../Errors/DuplicateError");
+const ConflictError = require("../Errors/ConflictError");
 const BadRequestError = require("../Errors/BadRequestError");
 
 const {
   BAD_REQUEST,
-  DUPLICATE_ERROR,
   AUTHENTICATION_ERROR,
   UNAUTHORIZED,
 } = require("../utils/errors");
