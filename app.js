@@ -32,10 +32,11 @@ app.get("/crash-test", () => {
   }, 0);
 });
 
+app.use(requestLogger);
+
 app.post("/signin", validateLogin, login);
 app.post("/signup", createUser);
 
-app.use(requestLogger);
 app.use("/", mainRouter);
 
 app.use((err, req, res) => {
