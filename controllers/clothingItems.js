@@ -43,8 +43,6 @@ const deleteItem = (req, res, next) => {
         throw new NotFoundError("Item not found");
       }
 
-      console.log(`Item Owner: ${item.owner}, User ID: ${req.user._id}`);
-
       if (item.owner.toString() !== req.user._id.toString()) {
         throw new ForbiddenError(
           "You do not have permission to delete this item."
