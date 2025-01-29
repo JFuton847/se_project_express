@@ -50,9 +50,9 @@ const createUser = (req, res, next) => {
   User.findOne({ email }) // Check if a user with the given email exists
     .then((existingUser) => {
       if (existingUser) {
-        return res
-          .status(DUPLICATE_ERROR)
-          .send({ message: "Email already exists." }); // Handle duplicate email
+        throw new DuplicateError(
+          "The user with the provided email already exists"
+        );
       }
 
       return bcrypt.hash(password, 10);
