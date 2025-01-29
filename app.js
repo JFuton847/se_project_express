@@ -38,7 +38,7 @@ app.post("/signup", createUser);
 app.use(requestLogger);
 app.use("/", mainRouter);
 
-app.use((err, req, res, next) => {
+app.use((err, req, res) => {
   res
     .status(err.status || 500)
     .json({ message: err.message || "Server Error" });
