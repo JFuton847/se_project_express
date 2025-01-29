@@ -7,6 +7,6 @@ const router = express.Router();
 
 router.put("/:itemId/likes", validateId, likeItem);
 
-router.delete("/:itemId/likes", dislikeItem);
+router.delete("/:itemId/likes", validateId, dislikeItem);
 
 module.exports = router;
