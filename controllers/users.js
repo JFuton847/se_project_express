@@ -6,6 +6,7 @@ const { JWT_SECRET } = require("../utils/config");
 const NotFoundError = require("../Errors/NotFoundError");
 const ConflictError = require("../Errors/ConflictError");
 const BadRequestError = require("../Errors/BadRequestError");
+const DuplicateError = require("../Errors/DuplicateError");
 
 const {
   BAD_REQUEST,
