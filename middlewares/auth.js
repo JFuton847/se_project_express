@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 // const JWT_SECRET = process.env.JWT_SECRET || "your_jwt_secret"; // Ensure this is consistent
 const { JWT_SECRET } = require("../utils/config");
 
-const { UNAUTHORIZED } = require("../utils/errors");
+const UnauthorizedError = require("../Errors/UnauthorizedError");
 
 const auth = (req, res, next) => {
   // Skip authorization for these routes
@@ -20,9 +20,7 @@ const auth = (req, res, next) => {
   const { authorization } = req.headers;
 
   if (!authorization || !authorization.startsWith("Bearer ")) {
-    return res
-      .status(UNAUTHORIZED)
-      .json({ message: "Authorization token required" });
+    return next(new UnauthorizedError("Authorization token required"));
   }
 
   const token = authorization.replace("Bearer ", "");
@@ -33,9 +31,9 @@ const auth = (req, res, next) => {
     return next();
   } catch (error) {
     console.error("Token verification failed:", error.message);
-    return res
-      .status(UNAUTHORIZED)
-      .json({ message: "Unauthorized: Invalid or expired token" });
+    return next(
+      new UnauthorizedError("Unauthorized: Invalid or expired token")
+    );
   }
 };
 

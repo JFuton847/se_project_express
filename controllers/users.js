@@ -6,13 +6,7 @@ const { JWT_SECRET } = require("../utils/config");
 const NotFoundError = require("../Errors/NotFoundError");
 const ConflictError = require("../Errors/ConflictError");
 const BadRequestError = require("../Errors/BadRequestError");
-const DuplicateError = require("../Errors/DuplicateError");
-
-const {
-  BAD_REQUEST,
-  AUTHENTICATION_ERROR,
-  UNAUTHORIZED,
-} = require("../utils/errors");
+const UnauthorizedError = require("../Errors/UnauthorizedError");
 
 // GET /users
 
@@ -73,7 +67,7 @@ const createUser = (req, res, next) => {
     .catch((err) => {
       console.error(err);
       if (err.code === 11000) {
-        return next(new DuplicateError("Duplicate email"));
+        return next(new ConflictError("Duplicate email"));
       }
       if (err.name === "ValidationError") {
         return next(new BadRequestError("Validation error"));
@@ -86,9 +80,7 @@ const login = (req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    return res
-      .status(BAD_REQUEST)
-      .send({ message: "Email and password are required." });
+    return next(new BadRequestError("Email and password are required"));
   }
 
   return User.findUserByCredentials(email, password)
@@ -100,7 +92,7 @@ const login = (req, res) => {
     })
     .catch((err) => {
       console.error(err);
-      return res.status(UNAUTHORIZED).send({ message: AUTHENTICATION_ERROR });
+      return next(new UnauthorizedError("Invalid email or password"));
     });
 };
 
@@ -129,7 +121,7 @@ const updateProfile = (req, res, next) => {
     .catch((err) => {
       console.error(err);
       if (err.name === "ValidationError") {
-        return res.status(BAD_REQUEST).send({ message: err.message });
+        return next(new BadRequestError("Bad Request"));
       }
       return next(err);
     });
