@@ -7,7 +7,7 @@ const mainRouter = require("./routes/index");
 const { login, createUser } = require("./controllers/users");
 const errorHandler = require("./middlewares/ErrorHandler");
 const { requestLogger, errorLogger } = require("./middlewares/logger");
-const { validateLogin, validateUserBody } = require("./middlewares/validation");
+const { validateLogin, validateSignUp } = require("./middlewares/validation");
 
 const app = express();
 const { PORT = 3001 } = process.env;
@@ -35,7 +35,7 @@ app.get("/crash-test", () => {
 app.use(requestLogger);
 
 app.post("/signin", validateLogin, login);
-app.post("/signup", validateUserBody, createUser);
+app.post("/signup", validateSignUp, createUser);
 
 app.use("/", mainRouter);
 
