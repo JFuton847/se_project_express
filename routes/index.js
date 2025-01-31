@@ -14,7 +14,7 @@ router.use(auth);
 router.use("/users", userRouter);
 router.use("/items", likesRouter);
 
-router.use((next) => {
+router.use((req, res, next) => {
   next(new NotFoundError("Requested resource not found"));
 });
 
